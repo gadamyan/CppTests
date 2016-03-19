@@ -72,10 +72,10 @@ namespace mcont
             return TreeMapPair<T>(item->key, item->value);
         }
 
-        TreeMapPair<T>* operator->() const
+        /*TreeMapPair<T>* operator->() const
         {
             return &operator*();
-        }
+        }*/
     };
 
     template<typename T>

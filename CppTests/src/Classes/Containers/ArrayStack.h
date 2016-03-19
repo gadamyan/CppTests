@@ -1,6 +1,8 @@
 #ifndef ArrayStack_h__
 #define ArrayStack_h__
 
+#include <stddef.h>
+
 template<typename T>
 class ArrayStack
 {
@@ -16,13 +18,13 @@ public:
 };
 
 template<typename T>
-ArrayStack<typename T>::ArrayStack()
+ArrayStack<T>::ArrayStack()
     : m_top(0)
 {
 }
 
 template<typename T>
-void ArrayStack<typename T>::push(T& item)
+void ArrayStack<T>::push(T& item)
 {
     if (m_top == m_maxSize)
     {
@@ -33,7 +35,7 @@ void ArrayStack<typename T>::push(T& item)
 }
 
 template<typename T>
-T ArrayStack<typename T>::pop()
+T ArrayStack<T>::pop()
 {
     if (m_top == 0)
     {
@@ -43,7 +45,7 @@ T ArrayStack<typename T>::pop()
 }
 
 template<typename T>
-size_t ArrayStack<typename T>::size()
+size_t ArrayStack<T>::size()
 {
     return m_top;
 }

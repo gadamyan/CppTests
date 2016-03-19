@@ -1,8 +1,9 @@
 #include <iostream>
 #include "Menu.h"
 
-void main()
+int main()
 {
     Menu menu;
     menu.show();
+    return 0;
 }

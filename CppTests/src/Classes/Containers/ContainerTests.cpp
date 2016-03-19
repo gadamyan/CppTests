@@ -74,11 +74,11 @@ void ContainerTests::testTreeMap()
         s.set(std::to_string(i), i);
     }
 
-    for (auto it = s.begin(); it != s.end(); ++it)
+    /*for (auto it = s.begin(); it != s.end(); ++it)
     {
         auto item = *it;
         std::cout << it->first << "  " << it->second << std::endl;
-    }
+    }*/
 
     s.clear();
     size_t stackSize = s.size();

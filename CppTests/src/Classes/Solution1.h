@@ -5,8 +5,6 @@
 class Solution1
 {
 public:
-    Solution1();
-    ~Solution1();
     void ex1();
     void ex2();
     void ex3();

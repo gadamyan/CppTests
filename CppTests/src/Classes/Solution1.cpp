@@ -5,14 +5,7 @@
 #include <list>
 #include <algorithm>
 #include <cmath>
-
-Solution1::Solution1()
-{
-}
-
-Solution1::~Solution1()
-{
-}
+#include <map>
 
 void Solution1::ex1()
 {
@@ -65,7 +58,7 @@ void Solution1::ex3()
 {
     char str[256];
     std::cin >> str;
-    int length = strlen(str);
+    int length = static_cast<int>(strlen(str));
     if (length < 2) return;
 
     int tail = 1;
@@ -90,7 +83,7 @@ void Solution1::ex4()
 {
     char str[256];
     std::cin >> str;
-    int length = strlen(str);
+    int length = static_cast<int>(strlen(str));
     if (length < 2) return;
 
     int tail = 1;
@@ -133,8 +126,8 @@ void Solution1::ex5()
     char str2[256];
     std::cin >> str1;
     std::cin >> str2;
-    int str1Size = strlen(str1);
-    int str2Size = strlen(str2);
+    int str1Size = static_cast<int>(strlen(str1));
+    int str2Size = static_cast<int>(strlen(str2));
     bool anagrams = true;
     if (str1Size == str2Size)
     {
@@ -170,10 +163,10 @@ void Solution1::ex5()
 void Solution1::ex6()
 {
     const char* replStr = "%20";
-    const int replStrLen = strlen(replStr);
+    const int replStrLen = static_cast<int>(strlen(replStr));
     char str[256];
     std::cin >> str;
-    const int len = strlen(str);
+    const int len = static_cast<int>(strlen(str));
     int spaceCount = 0;
     for (int i = 0; i < len; ++i)
     {
@@ -245,4 +238,30 @@ void Solution1::geometric1()
     float s1 = (inUpRight.x - inBottomLeft.x + 2 * radius) * (inUpRight.y - inBottomLeft.y + 2 * radius)
         - 4.0f * radius * radius * (1 - PI / 4.0f);
     std::cout << "Circumference " << p1 << "\n Area " << s1 << std::endl;
+}
+
+template<typename T>
+T findMostFrequent(const std::vector<T>& input)
+{
+    assert(!input.empty() && "Input shouldn't be empty");
+    std::map<T, int> itemMap;
+    int maxCount = 0;
+    T mostFrequent = *input.begin();
+    for (const T& item : input)
+    {
+        if (itemMap.find(item) == itemMap.end())
+        {
+            itemMap[item] = 1;
+        }
+        else
+        {
+            ++itemMap[item];
+        }
+        const int count = itemMap[item];
+        if (count > maxCount) {
+            maxCount = count;
+            mostFrequent = item;
+        }
+    }
+    return mostFrequent;
 }
