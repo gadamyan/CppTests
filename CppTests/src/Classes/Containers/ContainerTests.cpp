@@ -4,6 +4,7 @@
 #include "ListQueue.h"
 #include "LinkedList.h"
 #include "TreeMap.h"
+#include "HashMap.h"
 #include <iostream>
 
 void ContainerTests::testArrayStack()
