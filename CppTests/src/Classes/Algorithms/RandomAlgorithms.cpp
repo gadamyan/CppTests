@@ -2,6 +2,9 @@
 
 #include <regex>
 #include <iostream>
+#include "Simple/ReverseList.h"
+#include "Simple/ReverseBTree.h"
+#include "Simple/Fibonachi.h"
 
 void RandomAlgorithms::fileFilter()
 {
@@ -56,4 +59,21 @@ void RandomAlgorithms::mergeSortedVectors()
         std::cout << item << " ";
     }
     std::cout << std::endl;
+}
+
+
+void reverseList()
+{
+    ReverseList::testReverse();
+}
+
+void reverseBTree()
+{
+    ReverseBTree::testReverse();
+}
+
+
+void fibonachi()
+{
+    Fibonachi::testFibonachi();
 }

@@ -35,6 +35,9 @@
 /* Begin PBXFileReference section */
 		D26544531CCCDD5400C08C67 /* RandomAlgorithms.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RandomAlgorithms.cpp; sourceTree = "<group>"; };
 		D26544541CCCDD5400C08C67 /* RandomAlgorithms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomAlgorithms.h; sourceTree = "<group>"; };
+		D272B67E1CD5F5D800060200 /* ReverseList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReverseList.h; sourceTree = "<group>"; };
+		D272B67F1CD6141F00060200 /* ReverseBTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReverseBTree.h; sourceTree = "<group>"; };
+		D272B6801CD636B500060200 /* Fibonachi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Fibonachi.h; sourceTree = "<group>"; };
 		D28DF7A91C4A6B1B00597F6B /* MainApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MainApp; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2AE008F1CBAEEF000F75C6E /* HashMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashMap.h; sourceTree = "<group>"; };
 		D2AEE8D91C9D5A5500F06733 /* AlgorithmTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AlgorithmTests.cpp; sourceTree = "<group>"; };
@@ -75,6 +78,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D272B67D1CD5F5D800060200 /* Simple */ = {
+			isa = PBXGroup;
+			children = (
+				D272B6801CD636B500060200 /* Fibonachi.h */,
+				D272B67F1CD6141F00060200 /* ReverseBTree.h */,
+				D272B67E1CD5F5D800060200 /* ReverseList.h */,
+			);
+			path = Simple;
+			sourceTree = "<group>";
+		};
 		D28DF7A01C4A6B1B00597F6B = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +136,7 @@
 		D2AEE8D81C9D5A5500F06733 /* Algorithms */ = {
 			isa = PBXGroup;
 			children = (
+				D272B67D1CD5F5D800060200 /* Simple */,
 				D26544531CCCDD5400C08C67 /* RandomAlgorithms.cpp */,
 				D26544541CCCDD5400C08C67 /* RandomAlgorithms.h */,
 				D2AEE8D91C9D5A5500F06733 /* AlgorithmTests.cpp */,
