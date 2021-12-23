@@ -16,7 +16,7 @@ public:
     
     static int recursiveFibonachi(const int number)
     {
-        return if (number < 2) ? 1 : recursiveFibonachi(number - 1) + recursiveFibonachi(number - 2);
+        return (number < 2) ? 1 : recursiveFibonachi(number - 1) + recursiveFibonachi(number - 2);
     }
     
     static int iterativeFibonachi(const int number)
@@ -28,7 +28,7 @@ public:
         
         int prev = 1;
         int current = 1;
-        for (int i = 1; i < n; ++i)
+        for (int i = 1; i < number; ++i)
         {
             int temp = prev + current;
             prev = current;

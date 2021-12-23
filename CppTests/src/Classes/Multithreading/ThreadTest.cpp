@@ -19,13 +19,13 @@ void MainThreading::ThreadTest::test()
     test2();
     test3();
     test4();
+    deadlock();
 }
 
 void MainThreading::ThreadTest::threadFunction(const int i, std::shared_ptr<std::mutex> mutex)
 {
-    mutex->lock();
+    std::lock_guard<std::mutex> lock(*mutex);
     std::cout << "testing1 " << i << std::endl;
-    mutex->unlock();
 }
 
 void MainThreading::ThreadTest::test1()
@@ -49,9 +49,8 @@ void MainThreading::ThreadTest::test2()
     for (int i = 0; i < 100; ++i)
     {
         std::function<void()> callFunc([i, &mutex](){
-            mutex.lock();
+            std::lock_guard<std::mutex> lock(mutex);
             std::cout << "testing2 " << i << std::endl;
-            mutex.unlock();
         });
         threads.push_back(std::thread(callFunc));
     }
@@ -70,9 +69,8 @@ void MainThreading::ThreadTest::test3()
         std::function<void()> callFunc([i, &mutex](){
             int miliseconds = rand() % 1000;
             std::this_thread::sleep_for(std::chrono::milliseconds(miliseconds));
-            mutex.lock();
+            std::lock_guard<std::mutex> lock(mutex);
             std::cout << "testing3 " << i << std::endl;
-            mutex.unlock();
         });
         threads.push_back(std::thread(callFunc));
     }
@@ -98,4 +96,38 @@ void MainThreading::ThreadTest::test4()
         future.wait();
         future.get();
     }
+}
+
+void MainThreading::ThreadTest::deadlock()
+{
+    std::mutex firstMutex;
+    std::mutex secondMutex;
+    
+    auto firstFunction = [&firstMutex, &secondMutex](const int value)
+    {
+        std::lock_guard<std::mutex> firstLock(firstMutex);
+        std::lock_guard<std::mutex> secondLock(secondMutex);
+        std::cout << "Function 1 prints : " << value << std::endl;
+    };
+    
+    auto secondFunction = [&firstMutex, &secondMutex](const int value)
+    {
+        std::lock_guard<std::mutex> secondLock(secondMutex);
+        std::lock_guard<std::mutex> firstLock(firstMutex);
+        std::cout << "Function 2 prints : " << value << std::endl;
+    };
+    
+    auto cycleAndLog = [](std::function<void(int)> fn)
+    {
+        for (int i = 0; i < 1000; ++i)
+        {
+            fn(i);
+        }
+    };
+    
+    std::thread firstThread(cycleAndLog, firstFunction);
+    std::thread secondThread(cycleAndLog, secondFunction);
+    
+    firstThread.join();
+    secondThread.join();
 }

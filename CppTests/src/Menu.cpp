@@ -5,6 +5,8 @@
 #include "Classes/Containers/ContainerTests.h"
 #include "Classes/Algorithms/AlgorithmTests.h"
 #include "Classes/Algorithms/RandomAlgorithms.h"
+#include "Classes/CStyle/CSolutions.h"
+#include "Classes/Multithreading/ThreadTest.h"
 #include <iostream>
 
 Menu::Menu()
@@ -18,22 +20,20 @@ Menu::~Menu()
 
 void Menu::show()
 {
+    CSolutions cSolutions;
     Solution1 solution1;
     Solution2 solution2;
     TestSolutions testSolutions;
     ContainerTests containerTests;
     AlgorithmTests algorithmTests;
     RandomAlgorithms randomAlgorithms;
+    MainThreading::ThreadTest threadTest;
+    
     int number;
     while (true)
     {
+        std::cout << "Input a number" << std::endl;
         std::cout << "99 - Exit" << std::endl;
-        std::cout << "1 - Ex 1" << std::endl;
-        std::cout << "2 - Ex 2" << std::endl;
-        std::cout << "3 - Ex 3" << std::endl;
-        std::cout << "4 - Ex 4" << std::endl;
-        std::cout << "5 - Ex 5" << std::endl;
-        std::cout << "6 - Ex 6" << std::endl;
         std::cin >> number;
         switch (number)
         {
@@ -103,6 +103,11 @@ void Menu::show()
         case 302:
             randomAlgorithms.fileFilter();
             break;
+        case 403:
+            cSolutions.alocate();
+            break;
+        case 500:
+            threadTest.test();
         case 99:
             return;
         default:

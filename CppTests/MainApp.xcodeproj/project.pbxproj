@@ -17,6 +17,7 @@
 		D2AEE8F81C9D610500F06733 /* ThreadTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2AEE8F21C9D610500F06733 /* ThreadTest.cpp */; };
 		D2AEE8F91C9D610500F06733 /* SmartPointerTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2AEE8F61C9D610500F06733 /* SmartPointerTest.cpp */; };
 		D2AEE8FC1C9D8D9000F06733 /* Solution2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2AEE8FA1C9D8D9000F06733 /* Solution2.cpp */; };
+		D2B281B61CE87AB2002C7671 /* CSolutions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2B281B51CE87AB2002C7671 /* CSolutions.cpp */; };
 		D2CB62691CB93DC800BFF927 /* TestSolutions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2CB62671CB93DC800BFF927 /* TestSolutions.cpp */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,9 @@
 		D2AEE8F71C9D610500F06733 /* SmartPointerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmartPointerTest.h; sourceTree = "<group>"; };
 		D2AEE8FA1C9D8D9000F06733 /* Solution2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Solution2.cpp; sourceTree = "<group>"; };
 		D2AEE8FB1C9D8D9000F06733 /* Solution2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Solution2.h; sourceTree = "<group>"; };
+		D2B281B41CE87A79002C7671 /* CSolutions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSolutions.h; sourceTree = "<group>"; };
+		D2B281B51CE87AB2002C7671 /* CSolutions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSolutions.cpp; sourceTree = "<group>"; };
+		D2B281B71CE87F4B002C7671 /* NIAlgorithm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NIAlgorithm.h; sourceTree = "<group>"; };
 		D2CB62671CB93DC800BFF927 /* TestSolutions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestSolutions.cpp; sourceTree = "<group>"; };
 		D2CB62681CB93DC800BFF927 /* TestSolutions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestSolutions.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,6 +122,7 @@
 		D2AEE8D71C9D5A5500F06733 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D2B281B31CE87A79002C7671 /* CStyle */,
 				D2AEE8F01C9D610500F06733 /* DesignPatterns */,
 				D2AEE8F11C9D610500F06733 /* Multithreading */,
 				D2AEE8F41C9D610500F06733 /* SmartPointers */,
@@ -143,6 +148,7 @@
 				D2AEE8DA1C9D5A5500F06733 /* AlgorithmTests.h */,
 				D2AEE8DC1C9D5A5500F06733 /* StandardAlgorithms.h */,
 				D2AEE8DB1C9D5A5500F06733 /* StandardAlgorithms.cpp */,
+				D2B281B71CE87F4B002C7671 /* NIAlgorithm.h */,
 			);
 			path = Algorithms;
 			sourceTree = "<group>";
@@ -186,6 +192,15 @@
 				D2AEE8F71C9D610500F06733 /* SmartPointerTest.h */,
 			);
 			path = SmartPointers;
+			sourceTree = "<group>";
+		};
+		D2B281B31CE87A79002C7671 /* CStyle */ = {
+			isa = PBXGroup;
+			children = (
+				D2B281B41CE87A79002C7671 /* CSolutions.h */,
+				D2B281B51CE87AB2002C7671 /* CSolutions.cpp */,
+			);
+			path = CStyle;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,6 +269,7 @@
 				D2AEE8EA1C9D5A5500F06733 /* AlgorithmTests.cpp in Sources */,
 				D2AEE8F91C9D610500F06733 /* SmartPointerTest.cpp in Sources */,
 				D2AEE8EC1C9D5A5500F06733 /* ContainerTests.cpp in Sources */,
+				D2B281B61CE87AB2002C7671 /* CSolutions.cpp in Sources */,
 				D2AEE8EE1C9D5A5500F06733 /* Main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
