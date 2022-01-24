@@ -17,11 +17,9 @@ namespace cpptests::core::threading {
 class ProducerConsumer
 {
 public:
-    void produce()
-    {
+    void produce() {
         int count = 10;
-        while (count != 0)
-        {
+        while (count != 0) {
             std::unique_lock<std::mutex> lock(m_mutex);
             m_data.push_back(count);
             lock.unlock();
@@ -30,11 +28,9 @@ public:
         }
     }
 
-    void consume()
-    {
+    void consume() {
         int value = 0;
-        while (value != 1)
-        {
+        while (value != 1) {
             std::unique_lock<std::mutex> lock(m_mutex);
             m_cond.wait(lock, [this](){ return !m_data.empty(); });
             value = m_data.front();

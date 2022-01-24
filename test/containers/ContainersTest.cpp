@@ -23,101 +23,114 @@ namespace {
 
 using namespace cpptests::core::containers;
 
-TEST(ArrayTest, verify_the_global_access_of_the_singleton)
+TEST(ArrayTest, array_access)
 {
     std::initializer_list<int> list { 1, 4, 7, 9, 8 };
-    Array<int, 5> test_array = list;
+    Array<int, 5> testArray = list;
 
-    std::vector<int> expected_vector = list;
-    std::vector<int> actual_vector;
-    for (auto item : test_array)
-    {
-        actual_vector.push_back(item);
+    std::vector<int> expectedVector = list;
+    std::vector<int> actualVector;
+    for (auto item : testArray) {
+        actualVector.push_back(item);
     }
 
-    assert(test_array[1] == 4);
-    static_assert(test_array.size() == 5);
-    assert(test::is_equal(actual_vector, expected_vector));
+    ASSERT_EQ(4, testArray[1]);
+    static_assert(testArray.size() == 5);
+    ASSERT_TRUE(test::is_equal(actualVector, expectedVector));
 }
 
-TEST(LinkedListTest, verify_the_global_access_of_the_singleton)
+TEST(LinkedListTest, link_list_access)
 {
     std::initializer_list<int> list { 1, 4, 7, 9, 8 };
-    LinkedList<int> test_list = list;
-    assert(test_list.size() == list.size());
+    LinkedList<int> testList = list;
+    ASSERT_EQ(testList.size(), list.size());
 
-    std::vector<int> expected_vector = list;
-    std::vector<int> actual_vector;
-    actual_vector.reserve(list.size());
-    for (int i = 0; i < list.size(); ++i)
-    {
-        actual_vector.push_back(test_list.pop_back());
+    std::vector<int> expectedVector = list;
+    std::vector<int> actualVector;
+    actualVector.reserve(list.size());
+    for (int i = 0; i < list.size(); ++i) {
+        actualVector.push_back(testList.pop_back());
     }
-    std::reverse(actual_vector.begin(), actual_vector.end());
+    std::reverse(actualVector.begin(), actualVector.end());
 
-    assert(test_list.size() == 0);
-    assert(test::is_equal(actual_vector, expected_vector));
+    ASSERT_EQ(0, testList.size());
+    ASSERT_TRUE(test::is_equal(actualVector, expectedVector));
+}
+
+TEST(LinkedListTest, test_linked_list)
+{
+    std::vector<int> list { 1, 4, 7, 9, 8 };
+    std::vector<int> actualVector;
+    actualVector.reserve(list.size());
+    LinkedList<int> testList;
+    for (int i : list) {
+        testList.push_front(i);
+    }
+    size_t stackSize = testList.size();
+    for (int i = 0; i < stackSize; ++i) {
+        actualVector.emplace_back(testList.pop_front());
+    }
+    std::reverse(actualVector.begin(), actualVector.end());
+
+    ASSERT_EQ(0, testList.size());
+    ASSERT_TRUE(test::is_equal(actualVector, list));
 }
 
 TEST(ArrayStackTest, test_array_stack)
 {
-    ArrayStack<int> s;
-    for (int i = 0; i < 20; ++i)
-    {
-        s.push(i);
+    std::vector<int> list { 1, 4, 7, 9, 8 };
+    std::vector<int> actualVector;
+    actualVector.reserve(list.size());
+    ArrayStack<int> testStack;
+    for (int i : list) {
+        testStack.push(i);
     }
-    size_t stackSize = s.size();
-    for (int i = 0; i < stackSize; ++i)
-    {
-        std::cout << s.pop() << " ";
+    size_t stackSize = testStack.size();
+    for (int i = 0; i < stackSize; ++i) {
+        actualVector.emplace_back(testStack.pop());
     }
-    std::cout << std::endl;
+    std::reverse(actualVector.begin(), actualVector.end());
+
+    ASSERT_EQ(0, testStack.size());
+    ASSERT_TRUE(test::is_equal(actualVector, list));
 }
 
-    TEST(ListStackTest, test_list_stack)
-    {
-        ListStack<int> s;
-        for (int i = 0; i < 20; ++i)
-        {
-            s.push(i);
-        }
-        size_t stackSize = s.size();
-        for (int i = 0; i < stackSize; ++i)
-        {
-            std::cout << s.pop() << " ";
-        }
-        std::cout << std::endl;
+TEST(ListStackTest, test_list_stack)
+{
+    std::vector<int> list { 1, 4, 7, 9, 8 };
+    std::vector<int> actualVector;
+    actualVector.reserve(list.size());
+    ListStack<int> testStack;
+    for (int i : list) {
+        testStack.push(i);
+    }
+    size_t stackSize = testStack.size();
+    for (int i = 0; i < stackSize; ++i) {
+        actualVector.emplace_back(testStack.pop());
+    }
+    std::reverse(actualVector.begin(), actualVector.end());
+
+    ASSERT_EQ(0, testStack.size());
+    ASSERT_TRUE(test::is_equal(actualVector, list));
+}
+
+TEST(ListQueueTest, test_list_queue)
+{
+    std::vector<int> list { 1, 4, 7, 9, 8 };
+    std::vector<int> actualVector;
+    actualVector.reserve(list.size());
+    ListQueue<int> testQueue;
+    for (int i : list) {
+        testQueue.pushBack(i);
+    }
+    size_t stackSize = testQueue.size();
+    for (int i = 0; i < stackSize; ++i) {
+        actualVector.emplace_back(testQueue.popFront());
     }
 
-    TEST(ListQueueTest, test_list_queue)
-    {
-        ListQueue<int> s;
-        for (int i = 0; i < 20; ++i)
-        {
-            s.pushBack(i);
-        }
-        size_t stackSize = s.size();
-        for (int i = 0; i < stackSize; ++i)
-        {
-            std::cout << s.popFront() << " ";
-        }
-        std::cout << std::endl;
-    }
-
-    TEST(LinkedListTest, test_linked_list)
-    {
-        LinkedList<int> s;
-        for (int i = 0; i < 20; ++i)
-        {
-            s.push_back(i);
-        }
-        size_t stackSize = s.size();
-        for (int i = 0; i < stackSize; ++i)
-        {
-            std::cout << s.pop_front() << " ";
-        }
-        std::cout << std::endl;
-    }
+    ASSERT_EQ(0, testQueue.size());
+    ASSERT_TRUE(test::is_equal(actualVector, list));
+}
 
     TEST(TreeMapTest, test_tree_map)
     {

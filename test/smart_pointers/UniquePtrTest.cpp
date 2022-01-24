@@ -17,11 +17,11 @@ TEST(UniquePtrTest, verify_unique_pointer)
 {
     auto ptr1 = make_unique_ptr<int>(1);
     auto ptr2 = make_unique_ptr<int>(2);
-    assert(*ptr1 == 1);
-    assert(*ptr2 == 2);
+    ASSERT_EQ(*ptr1, 1);
+    ASSERT_EQ(*ptr2, 2);
 
     ptr1 = std::move(ptr2);
-    assert(*ptr1 == 2);
-    assert(ptr2.get() == nullptr);
+    ASSERT_EQ(*ptr1, 2);
+    ASSERT_EQ(ptr2.get(), nullptr);
 }
 }
