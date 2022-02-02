@@ -1,12 +1,9 @@
 //
-//  TestFactory.cpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
-#include <iostream>
 #include <vector>
 #include <thread>
 #include <chrono>
@@ -16,35 +13,38 @@
 
 namespace {
 
-void threadFunction(const int i, std::shared_ptr<std::mutex> mutex)
-{
+constexpr int kThreadCount = 100;
+
+void threadFunction(std::shared_ptr<int> accessCount, std::shared_ptr<std::mutex> mutex) {
     std::lock_guard<std::mutex> lock(*mutex);
-    std::cout << "testing1 " << i << std::endl;
+    ++(*accessCount);
 }
 
-TEST(ThreadTest, thread_test_1)
+TEST(ThreadTest, verify_thread_function_access)
 {
     std::vector<std::thread> threads;
-    std::shared_ptr<std::mutex> mutexPointer = std::make_shared<std::mutex>();
-    threads.reserve(100);
-    for (int i = 0; i < 100; ++i) {
-        threads.emplace_back(&threadFunction, i, mutexPointer);
+    auto mutexPointer = std::make_shared<std::mutex>();
+    auto accessCount = std::make_shared<int>(0);
+    threads.reserve(kThreadCount);
+    for (int i = 0; i < kThreadCount; ++i) {
+        threads.emplace_back(&threadFunction, accessCount, mutexPointer);
     }
     for (std::thread& thread : threads) {
         thread.join();
     }
+    ASSERT_EQ(*accessCount, kThreadCount);
 }
 
-TEST(ThreadTest, thread_test_3)
+TEST(ThreadTest, verify_thread_lambda_access)
 {
     std::vector<std::thread> threads;
-    threads.reserve(100);
+    threads.reserve(kThreadCount);
     std::mutex mutex;
     std::vector<int> result;
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < kThreadCount; ++i) {
         std::function<void()> callFunc([i, &mutex, &result](){
-            const int miliseconds = rand() % 100;
-            std::this_thread::sleep_for(std::chrono::milliseconds(miliseconds));
+            const int milliseconds = rand() % 100;
+            std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
             std::lock_guard<std::mutex> lock(mutex);
             result.push_back(i);
         });
@@ -56,15 +56,15 @@ TEST(ThreadTest, thread_test_3)
     ASSERT_FALSE(std::is_sorted(result.cbegin(), result.cend()));
 }
 
-TEST(ThreadTest, thread_test_4)
+TEST(ThreadTest, verify_async_future_access)
 {
     std::vector<int> result;
     std::vector<std::future<void>> futures;
     std::mutex mutex;
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < kThreadCount; ++i) {
         std::function<void()> callFunc([i, &mutex, &result]() {
-            const int miliseconds = rand() % 100;
-            std::this_thread::sleep_for(std::chrono::milliseconds(miliseconds));
+            const int milliseconds = rand() % 100;
+            std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
             std::lock_guard<std::mutex> lock(mutex);
             result.push_back(i);
         });
@@ -77,44 +77,28 @@ TEST(ThreadTest, thread_test_4)
     ASSERT_FALSE(std::is_sorted(result.cbegin(), result.cend()));
 }
 
-TEST(ThreadTest, deadlock)
+TEST(ThreadTest, verify_that_threads_dont_create_deadlock)
 {
     std::mutex firstMutex;
     std::mutex secondMutex;
-    bool isTerminated = false;
-    bool isFirstLocked = false;
-    bool isSecondLocked = false;
+    constexpr int iterationCount = 100000;
+    int accessCount = 0;
 
-    auto firstFunction = [&firstMutex, &secondMutex, &isTerminated, &isFirstLocked, &isSecondLocked](const int value)
-    {
+    auto firstFunction = [&firstMutex, &secondMutex, &accessCount](int value) {
         std::lock_guard<std::mutex> firstLock(firstMutex);
-        isFirstLocked = true;
-        if (isSecondLocked) {
-            isTerminated = true;
-            return;
-        }
         std::lock_guard<std::mutex> secondLock(secondMutex);
-        std::cout << "Function 1 prints : " << value << std::endl;
-        isFirstLocked = false;
-        isSecondLocked = false;
+        ++accessCount;
     };
 
-    auto secondFunction = [&firstMutex, &secondMutex, &isTerminated, &isFirstLocked, &isSecondLocked](const int value)
-    {
-        std::lock_guard<std::mutex> secondLock(secondMutex);
-        isSecondLocked = true;
-        if (isFirstLocked) {
-            isTerminated = true;
-            return;
-        }
+    auto secondFunction = [&firstMutex, &secondMutex, &accessCount](int value) {
+        //NOTE reversing the order of locking these two mutexes will result in deadlock
         std::lock_guard<std::mutex> firstLock(firstMutex);
-        std::cout << "Function 2 prints : " << value << std::endl;
-        isFirstLocked = false;
-        isSecondLocked = false;
+        std::lock_guard<std::mutex> secondLock(secondMutex);
+        ++accessCount;
     };
 
-    auto cycleAndLog = [](std::function<void(int)> fn) {
-        for (int i = 0; i < 1000; ++i) {
+    auto cycleAndLog = [](const std::function<void(int)>& fn) {
+        for (int i = 0; i < iterationCount; ++i) {
             fn(i);
         }
     };
@@ -124,7 +108,6 @@ TEST(ThreadTest, deadlock)
 
     firstThread.join();
     secondThread.join();
-
-    EXPECT_TRUE(isTerminated);
+    ASSERT_EQ(accessCount, iterationCount * 2);
 }
 }

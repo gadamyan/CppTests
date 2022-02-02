@@ -1,19 +1,15 @@
 //
-//  TestFactory.cpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #include "core/containers/Array.h"
-
 #include "core/containers/ArrayStack.h"
 #include "core/containers/ListStack.h"
 #include "core/containers/ListQueue.h"
 #include "core/containers/LinkedList.h"
 #include "core/containers/TreeMap.h"
-#include "core/containers/HashMap.h"
 
 
 #include "utils/TestUtils.h"
@@ -23,7 +19,7 @@ namespace {
 
 using namespace cpptests::core::containers;
 
-TEST(ArrayTest, array_access)
+TEST(ArrayTest, validate_array_access)
 {
     std::initializer_list<int> list { 1, 4, 7, 9, 8 };
     Array<int, 5> testArray = list;
@@ -36,10 +32,10 @@ TEST(ArrayTest, array_access)
 
     ASSERT_EQ(4, testArray[1]);
     static_assert(testArray.size() == 5);
-    ASSERT_TRUE(test::is_equal(actualVector, expectedVector));
+    ASSERT_TRUE(test::isEqual(actualVector, expectedVector));
 }
 
-TEST(LinkedListTest, link_list_access)
+TEST(LinkedListTest, validate_link_list_pop_back)
 {
     std::initializer_list<int> list { 1, 4, 7, 9, 8 };
     LinkedList<int> testList = list;
@@ -49,15 +45,15 @@ TEST(LinkedListTest, link_list_access)
     std::vector<int> actualVector;
     actualVector.reserve(list.size());
     for (int i = 0; i < list.size(); ++i) {
-        actualVector.push_back(testList.pop_back());
+        actualVector.push_back(testList.popBack());
     }
     std::reverse(actualVector.begin(), actualVector.end());
 
     ASSERT_EQ(0, testList.size());
-    ASSERT_TRUE(test::is_equal(actualVector, expectedVector));
+    ASSERT_TRUE(test::isEqual(actualVector, expectedVector));
 }
 
-TEST(LinkedListTest, test_linked_list)
+TEST(LinkedListTest, validate_linked_list_pop_front)
 {
     std::vector<int> list { 1, 4, 7, 9, 8 };
     std::vector<int> actualVector;
@@ -68,15 +64,15 @@ TEST(LinkedListTest, test_linked_list)
     }
     size_t stackSize = testList.size();
     for (int i = 0; i < stackSize; ++i) {
-        actualVector.emplace_back(testList.pop_front());
+        actualVector.emplace_back(testList.popFront());
     }
     std::reverse(actualVector.begin(), actualVector.end());
 
     ASSERT_EQ(0, testList.size());
-    ASSERT_TRUE(test::is_equal(actualVector, list));
+    ASSERT_TRUE(test::isEqual(actualVector, list));
 }
 
-TEST(ArrayStackTest, test_array_stack)
+TEST(ArrayStackTest, validate_array_stack_access)
 {
     std::vector<int> list { 1, 4, 7, 9, 8 };
     std::vector<int> actualVector;
@@ -92,10 +88,10 @@ TEST(ArrayStackTest, test_array_stack)
     std::reverse(actualVector.begin(), actualVector.end());
 
     ASSERT_EQ(0, testStack.size());
-    ASSERT_TRUE(test::is_equal(actualVector, list));
+    ASSERT_TRUE(test::isEqual(actualVector, list));
 }
 
-TEST(ListStackTest, test_list_stack)
+TEST(ListStackTest, validate_list_stack_access)
 {
     std::vector<int> list { 1, 4, 7, 9, 8 };
     std::vector<int> actualVector;
@@ -111,10 +107,10 @@ TEST(ListStackTest, test_list_stack)
     std::reverse(actualVector.begin(), actualVector.end());
 
     ASSERT_EQ(0, testStack.size());
-    ASSERT_TRUE(test::is_equal(actualVector, list));
+    ASSERT_TRUE(test::isEqual(actualVector, list));
 }
 
-TEST(ListQueueTest, test_list_queue)
+TEST(ListQueueTest, validate_list_queue_access)
 {
     std::vector<int> list { 1, 4, 7, 9, 8 };
     std::vector<int> actualVector;
@@ -129,29 +125,29 @@ TEST(ListQueueTest, test_list_queue)
     }
 
     ASSERT_EQ(0, testQueue.size());
-    ASSERT_TRUE(test::is_equal(actualVector, list));
+    ASSERT_TRUE(test::isEqual(actualVector, list));
 }
 
-    TEST(TreeMapTest, test_tree_map)
-    {
-        TreeMap<int> s;
-        for (int i = 0; i < 20; ++i)
-        {
-            s.set(std::to_string(i), i);
-        }
-
-        /*for (auto it = s.begin(); it != s.end(); ++it)
-        {
-            auto item = *it;
-            std::cout << it->first << "  " << it->second << std::endl;
-        }*/
-
-        s.clear();
-        size_t stackSize = s.size();
-        for (int i = 0; i < stackSize; ++i)
-        {
-            std::cout << s.get(std::to_string(i)) << " ";
-        }
-        std::cout << std::endl;
+TEST(TreeMapTest, validate_tree_map_access)
+{
+    TreeMap<int> treeMap;
+    for (int i = 0; i < 20; ++i) {
+        treeMap.set(std::to_string(i), i);
     }
+
+    for (auto it = treeMap.begin(); it != treeMap.end(); ++it) {
+        auto item = *it;
+        ASSERT_EQ(item.first, std::to_string(item.second));
+    }
+
+    size_t size = treeMap.size();
+    ASSERT_EQ(size, 20);
+    for (int i = 0; i < size; ++i) {
+        std::string key = std::to_string(i);
+        ASSERT_EQ(treeMap.get(key), i);
+    }
+
+    treeMap.clear();
+    ASSERT_EQ(treeMap.size(), 0);
+}
 }

@@ -1,9 +1,7 @@
 //
-//  TestFactory.cpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #include "core/patterns/Composite.h"
@@ -16,17 +14,17 @@ using namespace cpptests::core::patterns;
 TEST(CompositeTest, verify_the_global_access_of_the_singleton)
 {
     auto root = std::make_unique<Composite>();
-    root->add_child(std::make_unique<Lief>("F1"));
-    root->add_child(std::make_unique<Lief>("F2"));
-    root->add_child(std::make_unique<Lief>("F3"));
+    root->addChild(std::make_unique<Lief>("F1"));
+    root->addChild(std::make_unique<Lief>("F2"));
+    root->addChild(std::make_unique<Lief>("F3"));
 
-    std::unique_ptr<Composite> child = std::make_unique<Composite>();
-    child->add_child(std::make_unique<Lief>("F4"));
-    child->add_child(std::make_unique<Lief>("F5"));
-    child->add_child(std::make_unique<Lief>("F6"));
+    auto child = std::make_unique<Composite>();
+    child->addChild(std::make_unique<Lief>("F4"));
+    child->addChild(std::make_unique<Lief>("F5"));
+    child->addChild(std::make_unique<Lief>("F6"));
 
-    root->add_child(std::move(child));
-    const std::string full_path = root->get_path();
-    assert(full_path == "-F1\n-F2\n-F3\n--F4\n--F5\n--F6\n");
+    root->addChild(std::move(child));
+    const std::string fullPath = root->getPath();
+    ASSERT_EQ(fullPath, "-F1\n-F2\n-F3\n--F4\n--F5\n--F6\n");
 }
 }

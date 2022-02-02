@@ -1,84 +1,68 @@
 //
-//  TestFactory.cpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #include <gtest/gtest.h>
 
 namespace {
 
-TEST(CCtyleTest, create_2d_array)
+TEST(CCtyleTest, create_2d_array_and_check_the_values)
 {
     const int rowCount = 10;
-    const int reelCount = 10;
+    const int reelCount = 20;
 
     int** array = (int**)calloc(rowCount, sizeof(int*));
-    for (int i = 0; i < rowCount; ++i)
-    {
+    for (int i = 0; i < rowCount; ++i) {
         array[i] = (int*)calloc(reelCount, sizeof(int));
-    }
-
-    for (int i = 0; i < rowCount; ++i)
-    {
-        for (int j = 0; j < reelCount; ++j)
-        {
-            printf("%d", array[i][j]);
+        for (int j = 0; j < reelCount; ++j) {
+            array[i][j] = i * j;
         }
-        printf("\n");
     }
 
-    for (int i = 0; i < rowCount; ++i)
-    {
+    for (int i = 0; i < rowCount; ++i) {
+        for (int j = 0; j < reelCount; ++j) {
+            ASSERT_EQ(array[i][j], i * j);
+        }
+    }
+
+    for (int i = 0; i < rowCount; ++i) {
         free(array[i]);
     }
-
-//    assert(test_array[1] == 4);
-//    static_assert(test_array.size() == 5);
-//    assert(test::is_equal(actual_vector, expected_vector));
 }
 
-TEST(CCtyleTest, create_2d_array_as_single_array)
+TEST(CCtyleTest, create_2d_array_as_single_array_and_check_the_values)
 {
     const int rowCount = 10;
-    const int reelCount = 10;
+    const int reelCount = 20;
 
     int* array = (int*)malloc(sizeof(int) * rowCount * reelCount);
 
-    for (int i = 0; i < rowCount; ++i)
-    {
-        for (int j = 0; j < reelCount; ++j)
-        {
+    for (int i = 0; i < rowCount; ++i) {
+        for (int j = 0; j < reelCount; ++j) {
             const int index = i * reelCount + j;
             array[index] = i * j;
         }
     }
 
-    for (int i = 0; i < rowCount; ++i)
-    {
-        for (int j = 0; j < reelCount; ++j)
-        {
+    for (int i = 0; i < rowCount; ++i) {
+        for (int j = 0; j < reelCount; ++j) {
             const int index = i * reelCount + j;
-            printf("%d", array[index]);
+            ASSERT_EQ(array[index], i * j);
         }
-        printf("\n");
     }
 
     free(array);
-
-//    assert(test_list.size() == 0);
-//    assert(test::is_equal(actual_vector, expected_vector));
 }
 
-TEST(CCtyleTest, allocate_string)
+TEST(CCtyleTest, allocate_string_and_check_size)
 {
     const int size = 5;
     char* character = (char*)malloc(sizeof(char) * size);
     assert(character != NULL && "character is NULL");
     strcpy(character, "moo");
-    printf("%s\n", character);
+    ASSERT_EQ(strlen(character), 3);
     free(character);
 }
 }

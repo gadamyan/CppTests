@@ -1,9 +1,7 @@
 //
-//  TestFactory.hpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #pragma once
@@ -14,35 +12,27 @@
 
 namespace cpptests::core::threading {
 
-class ProducerConsumer
-{
+class ProducerConsumer {
 public:
-    void produce() {
-        int count = 10;
-        while (count != 0) {
-            std::unique_lock<std::mutex> lock(m_mutex);
-            m_data.push_back(count);
-            lock.unlock();
-            m_cond.notify_one();
-            --count;
-        }
-    }
-
-    void consume() {
-        int value = 0;
-        while (value != 1) {
-            std::unique_lock<std::mutex> lock(m_mutex);
-            m_cond.wait(lock, [this](){ return !m_data.empty(); });
-            value = m_data.front();
-            m_data.pop_front();
-            lock.unlock();
-        }
-    }
+    explicit ProducerConsumer(int taskCount);
+    ~ProducerConsumer();
+    void startProducing();
+    void startConsuming();
+    void finish();
+    int getExecutedTaskCount() const;
 
 private:
-    std::deque<int> m_data;
-    std::mutex m_mutex;
-    std::condition_variable m_cond;
+    void produce();
+    void consume();
+
+private:
+    const int mTaskCount;
+    int mExecutedTaskCount;
+    std::deque<int> mData;
+    std::mutex mMutex;
+    std::condition_variable mCond;
+    std::thread mProducerThread;
+    std::thread mConsumerThread;
 };
 
 }

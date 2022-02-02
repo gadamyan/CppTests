@@ -1,21 +1,25 @@
+//
+//  CppTests
+//
+//  Created by Gevorg Adamyan
+//
+
 #pragma once
 
 namespace cpptests::core::containers {
 
     template<typename T>
-    struct NodeQueue
-    {
+    struct NodeQueue {
         NodeQueue<T>* next;
         T data;
     };
 
     template<typename T>
-    class ListQueue
-    {
+    class ListQueue {
     private:
-        NodeQueue<T>*       m_front;
-        NodeQueue<T>*       m_back;
-        int                 m_size;
+        NodeQueue<T>* mFront;
+        NodeQueue<T>* mBack;
+        int mSize;
 
     public:
         ListQueue();
@@ -28,65 +32,54 @@ namespace cpptests::core::containers {
 
     template<typename T>
     ListQueue<T>::ListQueue()
-        : m_front(nullptr)
-        , m_back(nullptr)
-        , m_size(0)
-    {
-    }
+        : mFront(nullptr)
+        , mBack(nullptr)
+        , mSize(0)
+    {}
 
     template<typename T>
-    ListQueue<T>::~ListQueue()
-    {
+    ListQueue<T>::~ListQueue() {
         clear();
     }
 
     template<typename T>
-    void ListQueue<T>::pushBack(T& item)
-    {
+    void ListQueue<T>::pushBack(T& item) {
         NodeQueue<T>* temp = new NodeQueue<T>;
         temp->data = item;
-        if (m_size == 0)
-        {
-            m_front = temp;
+        if (mSize == 0) {
+            mFront = temp;
+        } else {
+            mBack->next = temp;
         }
-        else
-        {
-            m_back->next = temp;
-        }
-        m_back = temp;
-        ++m_size;
+        mBack = temp;
+        ++mSize;
     }
 
     template<typename T>
-    T ListQueue<T>::popFront()
-    {
-        if (m_size == 0)
-        {
+    T ListQueue<T>::popFront() {
+        if (mSize == 0) {
             throw "Queue is empty";
         }
-        NodeQueue<T>* temp = m_front;
+        NodeQueue<T>* temp = mFront;
         T tempData = temp->data;
-        m_front = m_front->next;
-        --m_size;
+        mFront = mFront->next;
+        --mSize;
         delete temp;
         return tempData;
     }
 
     template<typename T>
-    void ListQueue<T>::clear()
-    {
-        for (int i = 0; i < m_size; ++i)
-        {
-            NodeQueue<T>* temp = m_front;
-            m_front = m_front->next;
+    void ListQueue<T>::clear() {
+        for (int i = 0; i < mSize; ++i) {
+            NodeQueue<T>* temp = mFront;
+            mFront = mFront->next;
             delete temp;
         }
-        m_size = 0;
+        mSize = 0;
     }
 
     template<typename T>
-    int ListQueue<T>::size()
-    {
-        return m_size;
+    int ListQueue<T>::size() {
+        return mSize;
     }
 }

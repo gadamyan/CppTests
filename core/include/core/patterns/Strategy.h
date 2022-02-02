@@ -1,9 +1,7 @@
 //
-//  TestFactory.hpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #pragma once
@@ -12,51 +10,29 @@
 
 namespace cpptests::core::patterns {
 
-class IStrategy
-{
+class IStrategy {
 public:
     virtual int calculate(int number) const = 0;
     virtual ~IStrategy() = default;
 };
 
-class PowStrategy : public IStrategy
-{
+class PowStrategy : public IStrategy {
 public:
-    int calculate(int number) const override
-    {
-        return number * number;
-    }
+    int calculate(int number) const override;
 };
 
-class SumStrategy : public IStrategy
-{
+class SumStrategy : public IStrategy {
 public:
-    int calculate(int number) const override
-    {
-        int sum = 0;
-        for (int i = 1; i <= number; ++i)
-        {
-            sum += i;
-        }
-        return sum;
-    }
+    int calculate(int number) const override;
 };
 
-class NumberContext
-{
+class NumberContext {
 public:
-    void set_strategy(std::unique_ptr<IStrategy> strategy)
-    {
-        m_strategy = std::move(strategy);
-    }
-
-    int calculate(int number) const
-    {
-        return m_strategy->calculate(number);
-    }
+    void setStrategy(std::unique_ptr<IStrategy>&& strategy);
+    int calculate(int number) const;
 
 private:
-    std::unique_ptr<IStrategy> m_strategy;
+    std::unique_ptr<IStrategy> mStrategy;
 };
 
 }

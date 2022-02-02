@@ -1,9 +1,7 @@
 //
-//  TestFactory.cpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #include "core/patterns/Observer.h"
@@ -18,11 +16,12 @@ TEST(ObserverTest, verify_the_global_access_of_the_singleton)
     Subject subject;
     auto user1 = std::make_shared<User>();
     auto user2 = std::make_shared<User>();
-    subject.register_observer(user1);
-    subject.register_observer(user2);
+    subject.registerObserver(user1);
+    subject.registerObserver(user2);
 
-    subject.notifyObservers("Test");
-    assert(user1->get_message() == "Test");
-    assert(user2->get_message() == "Test");
+    const std::string message = "Test";
+    subject.notifyObservers(message);
+    ASSERT_EQ(user1->getMessage(), message);
+    ASSERT_EQ(user2->getMessage(), message);
 }
 }

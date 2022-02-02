@@ -1,3 +1,9 @@
+//
+//  CppTests
+//
+//  Created by Gevorg Adamyan
+//
+
 #pragma once
 
 #include <string>
@@ -10,17 +16,15 @@
 namespace cpptests::core::containers {
 
     template<typename T>
-    struct NodeTree
-    {
-        std::string     key;
-        T               value;
-        NodeTree<T>*    left;
-        NodeTree<T>*    right;
+    struct NodeTree {
+        std::string key;
+        T value;
+        NodeTree<T>* left;
+        NodeTree<T>* right;
     };
 
     template<typename T>
-    struct TreeMapPair
-    {
+    struct TreeMapPair {
         std::string& first;
         T& second;
         TreeMapPair(std::string& f, T& s) : first(f), second(s) {}
@@ -28,62 +32,45 @@ namespace cpptests::core::containers {
     };
 
     template<typename T>
-    class TreeMapIterator
-    {
-    private:
-        std::vector<NodeTree<T>*>       m_nodes;
-        int                             m_currentIndex;
-
+    class TreeMapIterator {
     public:
         TreeMapIterator(const std::vector<NodeTree<T>*>& nodes, int currentIndex)
-            : m_nodes(nodes)
-            , m_currentIndex(currentIndex)
-        {
+            : mNodes(nodes)
+            , mCurrentIndex(currentIndex) {
         }
 
-        TreeMapIterator<T>& operator++()
-        {
-            ++m_currentIndex;
+        TreeMapIterator<T>& operator++() {
+            ++mCurrentIndex;
             return *this;
         }
 
-        TreeMapIterator<T> operator++(int)
-        {
+        TreeMapIterator<T> operator++(int) {
             auto temp = this;
-            ++m_currentIndex;
+            ++mCurrentIndex;
             return temp;
         }
 
-        const bool operator != (const TreeMapIterator<T>& item) const
-        {
-            return m_currentIndex != item.m_currentIndex;
+        bool operator != (const TreeMapIterator<T>& item) const {
+            return mCurrentIndex != item.mCurrentIndex;
         }
 
-        const bool operator == (const TreeMapIterator<T>& item) const 
-        {
-            return m_currentIndex == item.m_currentIndex;
+        bool operator == (const TreeMapIterator<T>& item) const {
+            return mCurrentIndex == item.mCurrentIndex;
         }
 
-        TreeMapPair<T> operator*() const
-        {
-            assert(m_nodes.size() > m_currentIndex && "Out of range");
-            auto item = m_nodes[m_currentIndex];
+        TreeMapPair<T> operator*() const {
+            assert(mNodes.size() > mCurrentIndex && "Out of range");
+            auto item = mNodes[mCurrentIndex];
             return TreeMapPair<T>(item->key, item->value);
         }
 
-        /*TreeMapPair<T>* operator->() const
-        {
-            return &operator*();
-        }*/
+    private:
+        std::vector<NodeTree<T>*> mNodes;
+        int mCurrentIndex;
     };
 
     template<typename T>
-    class TreeMap
-    {
-    private:
-        NodeTree<T>*    m_top;
-        int             m_size;
-
+    class TreeMap {
     public:
         TreeMap();
         ~TreeMap();
@@ -96,79 +83,63 @@ namespace cpptests::core::containers {
         int size();
         TreeMapIterator<T> begin();
         TreeMapIterator<T> end();
+
+    private:
+        NodeTree<T>* mTop;
+        int mSize;
     };
 
     template<typename T>
     TreeMap<T>::TreeMap()
-        : m_top(nullptr)
-        , m_size(0)
-    {
-    }
+        : mTop(nullptr)
+        , mSize(0)
+    {}
 
     template<typename T>
-    TreeMap<T>::~TreeMap()
-    {
+    TreeMap<T>::~TreeMap() {
         clear();
     }
 
     template<typename T>
-    TreeMapIterator<T> TreeMap<T>::begin()
-    {
+    TreeMapIterator<T> TreeMap<T>::begin() {
         return TreeMapIterator<T>(breathFirstSearch(), 0);
     }
 
     template<typename T>
-    TreeMapIterator<T> TreeMap<T>::end()
-    {
-        return TreeMapIterator<T>(breathFirstSearch(), m_size);
+    TreeMapIterator<T> TreeMap<T>::end() {
+        return TreeMapIterator<T>(breathFirstSearch(), mSize);
     }
 
     template<typename T>
-    void TreeMap<T>::set(const std::string& key, const T& value)
-    {
+    void TreeMap<T>::set(const std::string& key, const T& value) {
         NodeTree<T>* temp = new NodeTree<T>;
         temp->key = key;
         temp->value = value;
         temp->right = nullptr;
         temp->left = nullptr;
-        if (m_size == 0)
-        {
-            m_top = temp;
-            ++m_size;
-        }
-        else
-        {
-            NodeTree<T>* element = m_top;
-            while (true)
-            {
-                if (element->key > key)
-                {
-                    if (element->left == nullptr)
-                    {
+        if (mSize == 0) {
+            mTop = temp;
+            ++mSize;
+        } else {
+            NodeTree<T>* element = mTop;
+            while (true) {
+                if (element->key > key) {
+                    if (element->left == nullptr) {
                         element->left = temp;
-                        ++m_size;
+                        ++mSize;
                         break;
-                    }
-                    else
-                    {
+                    } else {
                         element = element->left;
                     }
-                }
-                else if (element->key < key)
-                {
-                    if (element->right == nullptr)
-                    {
+                } else if (element->key < key) {
+                    if (element->right == nullptr) {
                         element->right = temp;
-                        ++m_size;
+                        ++mSize;
                         break;
-                    }
-                    else
-                    {
+                    } else {
                         element = element->right;
                     }
-                }
-                else
-                {
+                } else {
                     element->value = value;
                     delete temp;
                     break;
@@ -180,27 +151,19 @@ namespace cpptests::core::containers {
     template<typename T>
     T& TreeMap<T>::get(const std::string& key)
     {
-        NodeTree<T>* element = m_top;
-        while (true)
-        {
-            if (element->key > key)
-            {
+        NodeTree<T>* element = mTop;
+        while (true) {
+            if (element->key > key) {
                 element = element->left;
-                if (element == nullptr)
-                {
+                if (element == nullptr) {
                     break;
                 }
-            }
-            else if (element->key < key)
-            {
+            } else if (element->key < key) {
                 element = element->right;
-                if (element == nullptr)
-                {
+                if (element == nullptr) {
                     break;
                 }
-            }
-            else
-            {
+            } else {
                 break;
             }
         }
@@ -209,29 +172,20 @@ namespace cpptests::core::containers {
     }
 
     template<typename T>
-    bool TreeMap<T>::exists(const std::string& key)
-    {
-        NodeTree<T>* element = m_top;
-        while (true)
-        {
-            if (element->key > key)
-            {
+    bool TreeMap<T>::exists(const std::string& key) {
+        NodeTree<T>* element = mTop;
+        while (true) {
+            if (element->key > key) {
                 element = element->left;
-                if (element == nullptr)
-                {
+                if (element == nullptr) {
                     break;
                 }
-            }
-            else if (element->key < key)
-            {
+            } else if (element->key < key) {
                 element = element->right;
-                if (element == nullptr)
-                {
+                if (element == nullptr) {
                     break;
                 }
-            }
-            else
-            {
+            } else {
                 break;
             }
         }
@@ -239,43 +193,35 @@ namespace cpptests::core::containers {
     }
 
     template<typename T>
-    void TreeMap<T>::clear()
-    {
-        if (m_size == 0)
-        {
+    void TreeMap<T>::clear() {
+        if (mSize == 0) {
             return;
         }
         std::vector<NodeTree<T>*> elementsList = depthFirstSearch();
-        for (auto it = elementsList.begin(); it != elementsList.end(); ++it)
-        {
+        for (auto it = elementsList.begin(); it != elementsList.end(); ++it) {
             auto ptr = *it;
             delete ptr;
         }
-        m_size = 0;
+        mSize = 0;
     }
 
     template<typename T>
-    std::vector<NodeTree<T>*> TreeMap<T>::depthFirstSearch()
-    {
+    std::vector<NodeTree<T>*> TreeMap<T>::depthFirstSearch() {
         std::vector<NodeTree<T>*> result;
-        if (m_size == 0)
-        {
+        if (mSize == 0) {
             return result;
         }
         std::stack<NodeTree<T>*> tempStack;
-        NodeTree<T>* element = m_top;
+        NodeTree<T>* element = mTop;
         tempStack.push(element);
-        while (!tempStack.empty())
-        {
+        while (!tempStack.empty()) {
             element = tempStack.top();
             result.push_back(element);
             tempStack.pop();
-            if (element->left != nullptr)
-            {
+            if (element->left != nullptr) {
                 tempStack.push(element->left);
             }
-            if (element->right != nullptr)
-            {
+            if (element->right != nullptr) {
                 tempStack.push(element->right);
             }
         }
@@ -283,27 +229,22 @@ namespace cpptests::core::containers {
     }
 
     template<typename T>
-    std::vector<NodeTree<T>*> TreeMap<T>::breathFirstSearch()
-    {
+    std::vector<NodeTree<T>*> TreeMap<T>::breathFirstSearch() {
         std::vector<NodeTree<T>*> result;
-        if (m_size == 0)
-        {
+        if (mSize == 0) {
             return result;
         }
         std::queue<NodeTree<T>*> tempQueue;
-        NodeTree<T>* element = m_top;
+        NodeTree<T>* element = mTop;
         tempQueue.push(element);
-        while (!tempQueue.empty())
-        {
+        while (!tempQueue.empty()) {
             element = tempQueue.front();
             result.push_back(element);
             tempQueue.pop();
-            if (element->left != nullptr)
-            {
+            if (element->left != nullptr) {
                 tempQueue.push(element->left);
             }
-            if (element->right != nullptr)
-            {
+            if (element->right != nullptr) {
                 tempQueue.push(element->right);
             }
         }
@@ -311,8 +252,7 @@ namespace cpptests::core::containers {
     }
 
     template<typename T>
-    int TreeMap<T>::size()
-    {
-        return m_size;
+    int TreeMap<T>::size() {
+        return mSize;
     }
 }

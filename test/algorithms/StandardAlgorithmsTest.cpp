@@ -1,9 +1,7 @@
 //
-//  TestFactory.cpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #include "core/algorithms/StandardAlgorithms.h"
@@ -18,45 +16,44 @@ struct SortFixture : public ::testing::Test
 {
     using SortFuncType = std::function<void(int*, int)>;
 
-    void sort(SortFuncType&& sort_func)
-    {
-        auto test_array = test::create_test_array();
-        const auto sorted_array = test::create_sorted_array(test_array);
+    static void sort(SortFuncType&& sortFunc) {
+        auto testArray = test::createTestArray();
+        const auto sorted_array = test::createSortedArray(testArray);
 
-        sort_func(test_array.data(), test_array.size());
+        sortFunc(testArray.data(), testArray.size());
 
-        assert(test_array == sorted_array);
+        ASSERT_EQ(testArray, sorted_array);
     }
 };
 
-TEST_F(SortFixture, BubbleSort)
+TEST_F(SortFixture, validate_bubble_sort)
 {
-    sort(bubble_sort);
+    sort(bubbleSort);
 }
 
-TEST_F(SortFixture, SelectionSort)
+TEST_F(SortFixture, validate_selection_sort)
 {
-    sort(selection_sort);
+    sort(selectionSort);
 }
 
-TEST_F(SortFixture, InsertionSort)
+TEST_F(SortFixture, validate_insertion_sort)
 {
-    sort(insertion_sort);
+    sort(insertionSort);
 }
 
-TEST_F(SortFixture, CountSort)
+TEST_F(SortFixture, validate_count_sort)
 {
-    sort(count_sort);
+    sort(countSort);
 }
 
-TEST(BinarySearchTest, test)
+TEST(BinarySearchTest, validate_binary_search)
 {
-    auto sorted_array = test::create_sorted_array(test::create_test_array());
-    const int search_value = sorted_array[static_cast<int>(sorted_array.size()/3)];
-    const auto it = std::find(sorted_array.cbegin(), sorted_array.cend(), search_value);
-    const int search_position = static_cast<int>(it - sorted_array.cbegin());
+    auto sortedArray = test::createSortedArray(test::createTestArray());
+    const int searchValue = sortedArray[static_cast<int>(sortedArray.size() / 3)];
+    const auto it = std::find(sortedArray.cbegin(), sortedArray.cend(), searchValue);
+    const int searchPosition = static_cast<int>(it - sortedArray.cbegin());
 
-    const int test_out = binary_search(sorted_array.data(), sorted_array.size(), search_value);
-    assert(test_out == search_position);
+    const int testOut = binarySearch(sortedArray.data(), sortedArray.size(), searchValue);
+    ASSERT_EQ(testOut, searchPosition);
 }
 }

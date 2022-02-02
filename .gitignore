@@ -1,6 +1,7 @@
 # Created by https://www.gitignore.io
 
 ### Xcode ###
+build_xcode/
 build/
 *.pbxuser
 !default.pbxuser

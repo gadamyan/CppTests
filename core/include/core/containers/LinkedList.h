@@ -1,24 +1,17 @@
 //
-//  TestFactory.hpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #pragma once
 
-#include <memory>
-#include <ostream>
-
 namespace cpptests::core::containers {
 
 template <typename T>
-class LinkedList
-{
+class LinkedList {
 private:
-    struct ListNode
-    {
+    struct ListNode {
         T data;
         ListNode* next = nullptr;
         ListNode* prev = nullptr;
@@ -27,74 +20,58 @@ private:
 public:
     LinkedList() = default;
 
-    LinkedList(std::initializer_list<T> list)
-    {
-        for (T item : list)
-        {
-            push_back(item);
+    LinkedList(std::initializer_list<T> list) {
+        for (T item : list) {
+            pushBack(item);
         }
     }
 
-    ~LinkedList()
-    {
-        while (m_front)
-        {
-            auto node = m_front;
-            m_front = m_front->next;
+    ~LinkedList() {
+        while (mFront) {
+            auto node = mFront;
+            mFront = mFront->next;
             delete node;
         }
     }
 
-    void push_back(const T& item)
-    {
-        ++m_size;
+    void pushBack(const T& item) {
+        ++mSize;
         ListNode* node = new ListNode;
         node->data = item;
-        if (!m_front)
-        {
-            m_front = node;
-            m_back = node;
-        }
-        else
-        {
-            m_back->next = node;
-            node->prev = m_back;
-            m_back = node;
+        if (!mFront) {
+            mFront = node;
+            mBack = node;
+        } else {
+            mBack->next = node;
+            node->prev = mBack;
+            mBack = node;
         }
     }
 
-    void push_front(const T& item)
-    {
+    void push_front(const T& item) {
         ListNode* node = new ListNode;
         node->data = item;
-        if (m_size == 0)
-        {
-            m_front = m_back = node;
+        if (mSize == 0) {
+            mFront = mBack = node;
+        } else {
+            node->next = mFront;
+            mFront->prev = node;
+            mFront = node;
         }
-        else
-        {
-            node->next = m_front;
-            m_front->prev = node;
-            m_front = node;
-        }
-        ++m_size;
+        ++mSize;
     }
 
-    T pop_back()
-    {
-        assert(m_size != 0);
-        --m_size;
-        auto node = m_back;
+    T popBack() {
+        assert(mSize != 0);
+        --mSize;
+        auto node = mBack;
 
-        if (m_size == 0)
-        {
-            m_back = nullptr;
-            m_front = nullptr;
-        }
-        else
-        {
-            m_back = m_back->prev;
-            m_back->next = nullptr;
+        if (mSize == 0) {
+            mBack = nullptr;
+            mFront = nullptr;
+        } else {
+            mBack = mBack->prev;
+            mBack->next = nullptr;
         }
 
         T data = node->data;
@@ -103,40 +80,35 @@ public:
         return data;
     }
 
-    T pop_front()
-    {
-        if (m_size == 0)
-        {
+    T popFront() {
+        if (mSize == 0) {
             throw "List is empty";
         }
-        ListNode* temp = m_front;
+        ListNode* temp = mFront;
         T tempData = temp->data;
-        m_front = m_front->next;
+        mFront = mFront->next;
         delete temp;
-        --m_size;
+        --mSize;
         return tempData;
     }
 
-    void clear()
-    {
-        for (int i = 0; i < m_size; ++i)
-        {
-            ListNode* temp = m_front;
-            m_front = m_front->next;
+    void clear() {
+        for (int i = 0; i < mSize; ++i) {
+            ListNode* temp = mFront;
+            mFront = mFront->next;
             delete temp;
         }
-        m_size = 0;
+        mSize = 0;
     }
 
-    int size() const
-    {
-        return m_size;
+    int size() const {
+        return mSize;
     }
 
 private:
-    ListNode* m_front = nullptr;
-    ListNode* m_back = nullptr;
-    int m_size = 0;
+    ListNode* mFront = nullptr;
+    ListNode* mBack = nullptr;
+    int mSize = 0;
 };
 
 

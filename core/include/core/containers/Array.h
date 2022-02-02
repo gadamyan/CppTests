@@ -1,9 +1,7 @@
 //
-//  TestFactory.hpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #pragma once
@@ -14,96 +12,83 @@
 namespace cpptests::core::containers {
 
 template <typename T, size_t Size>
-class Array
-{
+class Array {
 public:
-    class Iterator
-    {
+    class Iterator {
         friend class Array;
 
     public:
-        Iterator& operator ++()
-        {
-            ++m_index;
+        Iterator& operator ++() {
+            ++mIndex;
             return *this;
         }
 
-        bool operator == (const Iterator& iterator)
-        {
-            return &m_array == &iterator.m_array && m_index == iterator.m_index;
+        bool operator == (const Iterator& iterator) {
+            return &mArray == &iterator.mArray && mIndex == iterator.mIndex;
         }
 
-        bool operator != (const Iterator& iterator)
-        {
-            return &m_array != &iterator.m_array || m_index != iterator.m_index;
+        bool operator != (const Iterator& iterator) {
+            return &mArray != &iterator.mArray || mIndex != iterator.mIndex;
         }
 
-        T& operator *()
-        {
-            return m_array[m_index];
+        T& operator *() {
+            return mArray[mIndex];
         }
 
     private:
         Iterator(Array& array, int index)
-        : m_index(index)
-        , m_array(array)
+        : mIndex(index)
+        , mArray(array)
         {
         }
 
     private:
-        int m_index;
-        Array<T, Size>& m_array;
+        int mIndex;
+        Array<T, Size>& mArray;
     };
 
     Array() = default;
 
-    Array(std::initializer_list<T> list)
-    {
+    Array(std::initializer_list<T> list) {
         assert(Size == list.size());
         int i = 0;
-        for (auto item : list)
-        {
-            m_array[i++] = item;
+        for (auto item : list) {
+            mArray[i++] = item;
         }
     }
 
-    T& operator[](int index)
-    {
-        return m_array[index];
+    Array(const Array& other) {
+        std::copy(std::begin(other.mArray), std::end(other.mArray), std::begin(mArray));
     }
 
-    constexpr size_t size()
-    {
+    T& operator[](int index) {
+        return mArray[index];
+    }
+
+    constexpr size_t size() {
         return Size;
     }
 
-    Iterator begin()
-    {
+    Iterator begin() {
         return Iterator(*this, 0);
     }
 
-    Iterator end()
-    {
+    Iterator end() {
         return Iterator(*this, Size);
     }
 
 private:
-    T m_array[Size];
+    T mArray[Size];
 };
 
 template <typename T, size_t Size>
-std::ostream& operator << (std::ostream& stream, Array<T, Size>& array)
-{
-    bool is_first = true;
-    for (const auto& item : array)
-    {
-        if (!is_first)
-        {
+std::ostream& operator << (std::ostream& stream, Array<T, Size>& array) {
+    bool isFirst = true;
+    for (const auto& item : array) {
+        if (!isFirst) {
             stream << ", ";
-        }
-        else
-        {
-            is_first = false;
+        } else {
+            isFirst = false;
         }
         stream << item;
     }

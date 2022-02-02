@@ -1,9 +1,7 @@
 //
-//  TestFactory.hpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #pragma once
@@ -13,68 +11,65 @@
 namespace cpptests::core::smart_pointers {
 
 template <typename T>
-class UniquePtr
-{
+class UniquePtr {
 public:
     UniquePtr() = default;
 
     UniquePtr(const UniquePtr&) = delete;
 
-    UniquePtr& operator =(const UniquePtr&) = delete;
+    UniquePtr& operator=(const UniquePtr&) = delete;
 
     explicit UniquePtr(T* ptr) {
-        m_ptr = ptr;
+        mPtr = ptr;
     }
 
     UniquePtr(UniquePtr&& pointer) noexcept {
-        m_ptr = pointer.m_ptr;
-        pointer.m_ptr = nullptr;
+        mPtr = pointer.mPtr;
+        pointer.mPtr = nullptr;
     }
 
-    UniquePtr& operator =(UniquePtr&& pointer) noexcept {
+    UniquePtr& operator=(UniquePtr&& pointer) noexcept {
         reset();
-        m_ptr = pointer.m_ptr;
-        pointer.m_ptr = nullptr;
+        mPtr = pointer.mPtr;
+        pointer.mPtr = nullptr;
         return *this;
     }
 
-    T& operator ->() const {
-        return *m_ptr;
+    T& operator->() const {
+        return *mPtr;
     }
 
-    T& operator *() const {
-        return *m_ptr;
+    T& operator*() const {
+        return *mPtr;
     }
 
     T* get() const {
-        return m_ptr;
+        return mPtr;
     }
 
     void reset() {
-        if (m_ptr != nullptr) {
-            delete m_ptr;
-            m_ptr = nullptr;
+        if (mPtr != nullptr) {
+            delete mPtr;
+            mPtr = nullptr;
         }
     }
 
     T* release() {
-        T* ptr = m_ptr;
-        m_ptr = nullptr;
+        T* ptr = mPtr;
+        mPtr = nullptr;
         return ptr;
     }
 
-    ~UniquePtr()
-    {
+    ~UniquePtr() {
         reset();
     }
 
 private:
-    T* m_ptr = nullptr;
+    T* mPtr = nullptr;
 };
 
 template <typename T, class... Args>
-UniquePtr<T> make_unique_ptr(Args&&... args)
-{
+UniquePtr<T> makeUniquePtr(Args&&... args) {
     return UniquePtr<T>(new T(std::forward<Args>(args)...));
 }
 

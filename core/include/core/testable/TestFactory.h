@@ -1,9 +1,7 @@
 //
-//  TestFactory.hpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #pragma once
@@ -14,37 +12,34 @@
 
 namespace cpptests::core::testable {
 
-class AbstractTest
-{
+class AbstractTest {
 public:
-    AbstractTest(std::string&& cathegory, std::string&& name);
+    AbstractTest(std::string&& category, std::string&& name);
     virtual void run() = 0;
     virtual ~AbstractTest() = default;
 
-    std::string get_cathegory() const;
-    std::string get_name() const;
+    std::string getCategory() const;
+    std::string getName() const;
 
 private:
-    const std::string m_cathegory;
-    const std::string m_name;
+    const std::string mCategory;
+    const std::string mName;
 };
 
-class TestFactory
-{
+class TestFactory {
 public:
-    void add_test(std::unique_ptr<AbstractTest> test);
-    void run_all_tests() const;
+    void addTest(std::unique_ptr<AbstractTest> test);
+    void runAllTests() const;
 
 private:
-    std::vector<std::unique_ptr<AbstractTest>> m_tests;
+    std::vector<std::unique_ptr<AbstractTest>> mTests;
 };
 
-TestFactory& get_factory();
+TestFactory& getFactory();
 
 template <typename T, typename... Args>
-bool make_test(Args&&... args)
-{
-    get_factory().add_test(std::make_unique<T>(std::forward<Args>(args)...));
+bool makeTest(Args&&... args) {
+    getFactory().addTest(std::make_unique<T>(std::forward<Args>(args)...));
     return true;
 }
 

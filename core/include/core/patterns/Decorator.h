@@ -1,9 +1,7 @@
 //
-//  TestFactory.hpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #pragma once
@@ -12,36 +10,24 @@
 
 namespace cpptests::core::patterns {
 
-class Component
-{
+class Component {
 public:
-    virtual int get_price() const = 0;
+    virtual int getPrice() const = 0;
     virtual ~Component() = default;
 };
 
-class ConcreteProduct : public Component
-{
+class ConcreteProduct : public Component {
 public:
-    int get_price() const override
-    {
-        return 100;
-    }
+    int getPrice() const override;
 };
 
-class ConcreteDecorator : public Component
-{
+class ConcreteDecorator : public Component {
 public:
-    ConcreteDecorator(std::unique_ptr<Component> component)
-    : m_component(std::move(component))
-    {
-    }
+    ConcreteDecorator(std::unique_ptr<Component>&& component);
+    int getPrice() const override;
 
-    int get_price() const override
-    {
-        return m_component->get_price() + 100;
-    }
 private:
-    std::unique_ptr<Component> m_component;
+    std::unique_ptr<Component> mComponent;
 };
 
 }

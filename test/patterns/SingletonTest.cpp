@@ -1,9 +1,7 @@
 //
-//  TestFactory.cpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #include "core/patterns/Singleton.h"
@@ -15,7 +13,7 @@ using namespace cpptests::core::patterns;
 
 TEST(SingletonTest, verify_the_global_access_of_the_singleton)
 {
-    GlobalsSingleton::get_instance().set_int(5);
-    assert(GlobalsSingleton::get_instance().get_int() == 5);
+    GlobalsSingleton::getInstance().setInt(5);
+    ASSERT_EQ(GlobalsSingleton::getInstance().getInt(), 5);
 }
 }

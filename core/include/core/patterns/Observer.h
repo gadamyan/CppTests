@@ -1,9 +1,7 @@
 //
-//  TestFactory.hpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #pragma once
@@ -14,53 +12,29 @@
 
 namespace cpptests::core::patterns {
 
-class IObserver
-{
+class IObserver {
 public:
-    virtual void set_message(const std::string& message) = 0;
+    virtual void setMessage(const std::string& message) = 0;
     virtual ~IObserver() = default;
 };
 
-class Subject
-{
+class Subject {
 public:
-    void notifyObservers(const std::string& message)
-    {
-        for (const auto& observer : m_observers)
-        {
-            observer->set_message(message);
-        }
-    }
-
-    void register_observer(std::shared_ptr<IObserver> observer)
-    {
-        m_observers.push_back(std::move(observer));
-    }
-
-    void remove_observer(std::shared_ptr<IObserver> observer)
-    {
-        m_observers.erase(std::remove(m_observers.begin(), m_observers.end(), observer), m_observers.end());
-    }
+    void notifyObservers(const std::string& message);
+    void registerObserver(std::shared_ptr<IObserver> observer);
+    void removeObserver(std::shared_ptr<IObserver> observer);
 
 private:
-    std::vector<std::shared_ptr<IObserver>> m_observers;
+    std::vector<std::shared_ptr<IObserver>> mObservers;
 };
 
-class User : public IObserver
-{
+class User : public IObserver {
 public:
-    void set_message(const std::string& message) override
-    {
-        m_message = message;
-    }
-
-    std::string get_message() const
-    {
-        return m_message;
-    }
+    void setMessage(const std::string& message) override;
+    std::string getMessage() const;
 
 private:
-    std::string m_message;
+    std::string mMessage;
 };
 
 }

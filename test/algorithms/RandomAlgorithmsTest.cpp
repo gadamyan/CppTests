@@ -1,14 +1,12 @@
 //
-//  TestFactory.cpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #include "core/algorithms/RandomAlgorithms.h"
-#include "core/algorithms/LinkedList.h"
-#include "core/algorithms/BinaryTree.h"
+#include "core/algorithms/LinkedListAlgorithms.h"
+#include "core/algorithms/BinaryTreeAlgorithms.h"
 #include "utils/TestUtils.h"
 #include <gtest/gtest.h>
 
@@ -16,71 +14,99 @@ namespace {
 
 using namespace cpptests::core::algorithms;
 
-TEST(MergeTwoSortedVectorsTest, verify_the_global_access_of_the_singleton)
+TEST(MergeTwoSortedVectorsTest, verify_merged_sorted_vectors)
 {
-    const auto vec1 = test::create_sorted_array(test::create_test_vector<30>());
-    const auto vec2 = test::create_sorted_array(test::create_test_vector<40>());
+    const auto vec1 = test::createSortedArray(test::createTestVector<30>());
+    const auto vec2 = test::createSortedArray(test::createTestVector<40>());
 
-    std::vector<int> merged_vector;
-    merged_vector.reserve(vec1.size() + vec2.size());
-    merged_vector.insert(merged_vector.end(), vec1.cbegin(), vec1.cend());
-    merged_vector.insert(merged_vector.end(), vec2.cbegin(), vec2.cend());
-    std::sort(merged_vector.begin(), merged_vector.end());
+    std::vector<int> mergedVector;
+    mergedVector.reserve(vec1.size() + vec2.size());
+    mergedVector.insert(mergedVector.end(), vec1.cbegin(), vec1.cend());
+    mergedVector.insert(mergedVector.end(), vec2.cbegin(), vec2.cend());
+    std::sort(mergedVector.begin(), mergedVector.end());
 
-    const auto result = merge_two_sorted_vectors(vec1, vec2);
+    const auto result = mergeTwoSortedVectors(vec1, vec2);
 
-    ASSERT_TRUE(test::is_equal(result, merged_vector));
+    ASSERT_TRUE(test::isEqual(result, mergedVector));
 }
 
-TEST(ReverseLinkedListTest, verify_the_global_access_of_the_singleton)
+TEST(MergeSortedVectorsTest, verify_merged_sorted_vectors)
 {
-    const auto test_vector = test::create_test_vector<30>();
-    auto reversed_vector = test_vector;
-    std::reverse(reversed_vector.begin(), reversed_vector.end());
-    auto root = create_linked_list(test_vector);
+    const auto vec1 = test::createSortedArray(test::createTestVector<30>());
+    const auto vec2 = test::createSortedArray(test::createTestVector<40>());
+    const auto vec3 = test::createSortedArray(test::createTestVector<50>());
 
-    const auto reversed_root = reverse_linked_list(root);
+    std::vector<int> mergedVector;
+    mergedVector.reserve(vec1.size() + vec2.size());
+    mergedVector.insert(mergedVector.end(), vec1.cbegin(), vec1.cend());
+    mergedVector.insert(mergedVector.end(), vec2.cbegin(), vec2.cend());
+    mergedVector.insert(mergedVector.end(), vec3.cbegin(), vec3.cend());
+    std::sort(mergedVector.begin(), mergedVector.end());
 
-    const auto result = create_vector_from_linked_list(reversed_root);
-    assert(test::is_equal(result, reversed_vector));
+    const auto result = mergeSortedVectors(std::vector<std::vector<int>>{vec1, vec2, vec3});
+
+    ASSERT_TRUE(test::isEqual(result, mergedVector));
 }
 
-
-TEST(ReverseBinaryTreeTest, verify_the_global_access_of_the_singleton)
+TEST(ReverseLinkedListTest, check_the_values_of_the_reversed_link_list)
 {
-    const auto test_vector = test::create_sorted_array(test::create_test_vector());
-    auto root = create_tree_from_vector(test_vector);
+    const auto testVector = test::createTestVector<30>();
+    auto reversedVector = testVector;
+    std::reverse(reversedVector.begin(), reversedVector.end());
+    auto root = createLinkedList(testVector);
 
-    root = reverse_binary_tree(root);
+    const auto reversedRoot = reverseLinkedList(root);
 
-    auto reversed_vector = test_vector;
-    std::reverse(reversed_vector.begin(), reversed_vector.end());
+    const auto result = createVectorFromLinkedList(reversedRoot);
+    ASSERT_TRUE(test::isEqual(result, reversedVector));
+}
 
-    auto result = create_vector_from_tree(root);
-    assert(test::is_equal(result, reversed_vector));
+TEST(ReverseBinaryTreeTest, check_the_values_of_the_reversed_binary_tree)
+{
+    const auto testVector = test::createSortedArray(test::createTestVector());
+    auto root = createTreeFromVector(testVector);
+
+    root = reverseBinaryTree(root);
+
+    auto reversedVector = testVector;
+    std::reverse(reversedVector.begin(), reversedVector.end());
+
+    auto result = createVectorFromTree(root);
+    ASSERT_TRUE(test::isEqual(result, reversedVector));
+}
+
+TEST(RegexTest, verify_filered_words)
+{
+    const std::string inputText("fasd , adsfads,... adsfads ,,adfa ,a, adsf");
+    const std::vector<std::string> expectedResult {"fasd", "adsfads", "adsfads", "adfa", "a", "adsf"};
+    auto words = filerWords(inputText);
+    ASSERT_TRUE(test::isEqual(words, expectedResult));
+}
+
+TEST(IntConversionTest, verify_converted_integer)
+{
+    ASSERT_EQ(convertToInt("1111", 4), 1111);
 }
 
 struct FibonacciFixture : public ::testing::Test
 {
     using FibonacciFuncType = std::function<int(int)>;
 
-    void fibonacci(FibonacciFuncType&& fibonacci_func)
-    {
-        const std::vector<int> fib_sequence { 1, 1, 2, 3, 5, 8, 13, 21 };
-        for (int i = 0; i < fib_sequence.size(); ++i)
-        {
-            ASSERT_EQ(fibonacci_func(i), fib_sequence[i]);
+    void fibonacci(FibonacciFuncType&& fibonacciFunc) {
+        const std::vector<int> fibSequence {1, 1, 2, 3, 5, 8, 13, 21};
+        for (int i = 0; i < fibSequence.size(); ++i) {
+            ASSERT_EQ(fibonacciFunc(i), fibSequence[i]);
         }
     }
 };
 
-TEST_F(FibonacciFixture, RecursiveFibonacciTest)
+TEST_F(FibonacciFixture, check_recursive_fibonacci_value)
 {
-    fibonacci(get_fibonacci_recursive);
+    fibonacci(getFibonacciRecursive);
 }
 
-TEST_F(FibonacciFixture, IterativeFibonacciTest)
+TEST_F(FibonacciFixture, check_iterative_fibonacci_value)
 {
-    fibonacci(get_fibonacci_iterative);
+    fibonacci(getFibonacciIterative);
 }
 }

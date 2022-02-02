@@ -1,3 +1,9 @@
+//
+//  CppTests
+//
+//  Created by Gevorg Adamyan
+//
+
 #pragma once
 
 #include <cstddef>
@@ -5,49 +11,45 @@
 namespace cpptests::core::containers {
 
 template<typename T>
-class ArrayStack
-{
-private:
-    static const int m_maxSize = 256;
-    size_t m_top;
-    T container[m_maxSize];
+class ArrayStack {
 public:
     ArrayStack();
+    ArrayStack(const ArrayStack&) = delete;
+    ArrayStack& operator=(const ArrayStack&) = delete;
     void push(T& item);
     T pop();
     size_t size();
+
+private:
+    static constexpr int mMaxSize = 256;
+    size_t mTop;
+    T container[mMaxSize];
 };
 
 template<typename T>
 ArrayStack<T>::ArrayStack()
-    : m_top(0)
-{
-}
+    : mTop(0)
+{}
 
 template<typename T>
-void ArrayStack<T>::push(T& item)
-{
-    if (m_top == m_maxSize)
-    {
+void ArrayStack<T>::push(T& item) {
+    if (mTop == mMaxSize) {
         throw "Stack overflow";
     }
-    container[m_top] = item;
-    ++m_top;
+    container[mTop] = item;
+    ++mTop;
 }
 
 template<typename T>
-T ArrayStack<T>::pop()
-{
-    if (m_top == 0)
-    {
+T ArrayStack<T>::pop() {
+    if (mTop == 0) {
         throw "Stack is Empty";
     }
-    return container[--m_top];
+    return container[--mTop];
 }
 
 template<typename T>
-size_t ArrayStack<T>::size()
-{
-    return m_top;
+size_t ArrayStack<T>::size() {
+    return mTop;
 }
 }

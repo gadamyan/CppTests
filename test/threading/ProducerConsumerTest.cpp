@@ -1,9 +1,7 @@
 //
-//  TestFactory.cpp
-//  cpptests
+//  CppTests
 //
-//  Created by Adamyan, Gevorg on 10/28/18.
-//  Copyright © 2018 Adamyan, Gevorg. All rights reserved.
+//  Created by Gevorg Adamyan
 //
 
 #include "core/threading/ProducerConsumer.h"
@@ -13,13 +11,12 @@ namespace {
 
 using namespace cpptests::core::threading;
 
-TEST(ProducerConsumerTest, verify_the_global_access_of_the_singleton)
+TEST(ProducerConsumerTest, verify_that_the_consumer_processes_the_tasks_that_producer_creates)
 {
-    ProducerConsumer producer_consumer;
-    std::thread producer(&ProducerConsumer::produce, &producer_consumer);
-    std::thread consumer(&ProducerConsumer::consume, &producer_consumer);
-
-    producer.join();
-    consumer.join();
+    ProducerConsumer producerConsumer(100000);
+    producerConsumer.startProducing();
+    producerConsumer.startConsuming();
+    producerConsumer.finish();
+    ASSERT_EQ(producerConsumer.getExecutedTaskCount(), 100000);
 }
 }
